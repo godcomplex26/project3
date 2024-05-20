@@ -1,0 +1,59 @@
+<style>
+  .star-rating {
+    display: inline-block;
+  }
+
+  .star {
+    font-size: 24px;
+    cursor: pointer;
+    color: #ccc;
+  }
+
+  .star.checked {
+    color: #ff7e5f;
+  }
+</style>
+
+<script>
+function submitRating(buy_id) {
+    var buy_score = document.querySelector('.star-rating[data-buy_id="' + buy_id + '"] .star.checked');
+    if (buy_score) {
+        buy_score = buy_score.getAttribute('data-value');
+    } else {
+        buy_score = 0;
+    }
+
+    // Set the value of buy_score_input_<buy_id>
+    document.getElementById('buy_score_input_' + buy_id).value = buy_score;
+
+    console.log('구매 ID: ' + buy_id + ', 별점: ' + buy_score);
+
+    // Continue with the submission
+    return true;
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var starForms = document.querySelectorAll('form');
+
+    starForms.forEach(function (form) {
+        var stars = form.querySelectorAll('.star');
+        var input = form.querySelector('.buy_score_input');
+
+        stars.forEach(function (star) {
+            star.addEventListener('click', function () {
+                var value = this.getAttribute('data-value');
+
+                stars.forEach(function (s) {
+                    s.classList.remove('checked');
+                });
+
+                for (var i = 1; i <= value; i++) {
+                    stars[i - 1].classList.add('checked');
+                }
+
+                input.value = value;
+            });
+        });
+    });
+});
+</script>
